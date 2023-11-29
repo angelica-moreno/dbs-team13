@@ -167,7 +167,7 @@
             const adminPassword = document.getElementById('adminPassword').value;
 
             // Check admin credentials
-            if (adminUsername === 'admin' && adminPassword === '12345') {
+            if (adminUsername === 'admin' && adminPassword === 'dbadm1n') {
                 // Get book details
                 const bookTitle = document.getElementById('bookTitle').value;
                 const author = document.getElementById('author').value;
@@ -185,13 +185,11 @@
             const adminPassword = document.getElementById('adminPassword').value;
 
             // Check admin credentials
-            if (adminUsername === 'admin' && adminPassword === '12345') {
+            if (adminUsername === 'admin' && adminPassword === 'dbadm1n') {
                 // Get the book ID entered by the admin
                 const bookIDToRemove = document.getElementById('bookID').value;
 
-                // Implement logic to remove the book with the specified ID (to be implemented)
-                // You may want to make a server request or interact with your data storage mechanism.
-                // For now, we'll just display an alert to simulate the removal.
+                
                 alert(`Book with ID ${bookIDToRemove} removed successfully!`);
             } else {
                 alert('Invalid admin credentials.');
