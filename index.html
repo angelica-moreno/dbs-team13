@@ -3,9 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
+    <title>DBM University Library</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
 </head>
-<body>
-    <h1>Hello, World!</h1>
+
+
+    <center><h1>DBM University Library</h1></center> 
+
+    <!-- Admin Section - Add Books -->
+    <h2>Admin Panel - Add Books</h2>
+    <form>
+        <label for="bookTitle">Book Title:</label>
+        <input type="text" id="bookTitle" name="bookTitle" required>
+
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required>
+
+        <button type="button" onclick="addBook()">Add Book</button>
+    </form>
+
+    <!-- Staff Section - Add/Return Books -->
+    <h2>Staff Panel - Add/Return Books</h2>
+    <form>
+        <label for="bookID">Book ID:</label>
+        <input type="text" id="bookID" name="bookID" required>
+
+        <label for="action">Action:</label>
+        <select id="action" name="action">
+            <option value="add">Add</option>
+            <option value="return">Return</option>
+        </select>
+
+        <button type="button" onclick="staffAction()">Submit</button>
+    </form>
+
+    <!-- Student Section - Borrow/Return Books by Grade -->
+    <h2>Student Panel - Borrow/Return Books</h2>
+    <form>
+        <label for="studentID">Student ID:</label>
+        <input type="text" id="studentID" name="studentID" required>
+
+        <label for="grade">Grade:</label>
+        <select id="grade" name="grade">
+            <option value="freshman">Freshman</option>
+            <option value="sophomore">Sophomore</option>
+            <option value="junior">Junior</option>
+            <option value="senior">Senior</option>
+        </select>
+
+        <label for="action">Action:</label>
+        <select id="action" name="action">
+            <option value="borrow">Borrow</option>
+            <option value="return">Return</option>
+        </select>
+
+        <button type="button" onclick="studentAction()">Submit</button>
+    </form>
+
+    <script>
+        function addBook() {
+            // Logic for adding books (to be implemented)
+            alert('Book added successfully!');
+        }
+
+        function staffAction() {
+            // Logic for staff actions (to be implemented)
+            alert('Action submitted successfully!');
+        }
+
+        function studentAction() {
+            // Logic for student actions (to be implemented)
+            alert('Action submitted successfully!');
+        }
+    </script>
+
 </body>
 </html>
