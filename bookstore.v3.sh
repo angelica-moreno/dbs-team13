@@ -23,6 +23,7 @@ add_book() {
     read -p "Book ID: " book_id
     read -p "Grade Level: " grade_level
 
+
     # Construct the SQL command with user-input values
     sql_command="INSERT INTO books (title, author, book_id, grade_level, availability) VALUES ('$title', '$author', '$book_id', '$grade_level', true);"
 
@@ -54,7 +55,7 @@ show_all_books() {
 
 
 
-# Student roles to search & borrow and return books. 
+# Student roles to borrow and return books. 
 
 
 # Function to search and display available books based on user's grade level
@@ -72,13 +73,13 @@ search_and_borrow_book() {
 
         # Display available books at the specified grade level
         echo "Available books for grade level $user_grade_level:"
-        psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -c "SELECT * FROM books WHERE grade_level = $user_grade_level AND availability = true;"
+        psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -c "SELECT * FROM books WHERE grade_level = '$user_grade_level' AND availability = true;"
 
         # Prompt the user to enter the book ID to borrow
         read -p "Enter the book ID to borrow: " book_id
 
         # Check if the selected book is available
-        available=$(psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -t -c "SELECT availability FROM books WHERE book_id = $book_id AND availability = true;")
+        available=$(psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -t -c "SELECT availability FROM books WHERE book_id = '$book_id' AND availability = true;")
 
         available=$(echo "$available" | tr -d '[:space:]')
         echo "Debug: Availability - $available"
@@ -111,7 +112,7 @@ return_book() {
         echo "Book not found or not borrowed."
     else
         echo "Returning book: $borrowed"
-        # Add returning logic here
+        echo "UPDATE books SET availability = true WHERE book_id = '$return_term';" | connect_db
     fi
 }
 
