@@ -1,0 +1,48 @@
+CREATE TABLE Author (
+   Author_ID INT Primary KEY,
+   Name VARCHAR (50),
+   Biography VARCHAR (500)
+);
+INSERT INTO Author(Author_ID, Name, Biography)
+VALUES(614857, 'J.K. Rowling', 'Joanne Rowling is a British author, philanthropist, film producer, television producer, and screenwriter. She is best known for writing the Harry Potter fantasy series.');
+
+INSERT INTO Author(Author_ID, Name, Biography)
+VALUES(723784, 'Michelle Obama', 'Michelle LaVaughn Robinson Obama is an American attorney, author, and former First Lady of the United States. She is married to Barack Obama, the 44th President of the United States.');
+
+Table:
+CREATE TABLE Members(
+Member_ID INT PRIMARY KEY,
+Phone_Number VARCHAR(50),
+Name VARCHAR(100),
+Degree_Type VARCHAR(100),
+Major VARCHAR(100)
+);
+
+Instances:
+INSERT INTO Members(Member_ID, Phone_Number, Name, Degree_Type, Major)
+VALUES(6243987, 3058790934, ‘Roary’, ‘Masters’, ‘Literature’);
+
+
+INSERT INTO Members(Member_ID, Phone_Number, Name, Degree_Type, Major)
+VALUES(6263287, 7868791235, ‘Chris’, 'Bachelors', 'Business');
+
+
+\ 
+CREATE TABLE Book(
+Book_ID INT PRIMARY KEY,
+Author VARCHAR(100),
+Publication_Year DATE,
+Copies_Available INT,
+Author_ID INT,
+FOREIGN KEY (Author_ID) REFERENCES Author(Author_ID),
+);
+
+
+Instances:
+INSERT INTO Book (Book_ID, Author, Publication_Year, Copies_Available, Author_ID)
+VALUES (1338878921, 'J.K. Rowling', '1998-09-01', 12, 614857);
+
+
+
+INSERT INTO Book(Book_ID, Author, Publication_Year, Copies_Avaialble, Author_ID, Genre_ID)
+VALUES(1524763136, ‘Michelle Obama’, ‘2018-11-13’, 5, 723784);
