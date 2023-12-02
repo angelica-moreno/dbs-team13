@@ -81,18 +81,30 @@ search_and_borrow_book() {
         # Check if the selected book is available
         available=$(psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -t -c "SELECT availability FROM books WHERE book_id = '$book_id' AND availability = true;")
 
-        available=$(echo "$available" | tr -d '[:space:]')
+        available=$(echo "$availble" | tr -d '[:space:]')
         echo "Debug: Availability - $available"
 
         if [ "$available" == "t" ]; then
             # Call the SQL function to borrow the book
             echo "SELECT borrow_book($book_id, '$USER_TYPE', $user_grade_level);" | connect_db
             echo "UPDATE books SET availability = false WHERE book_id = $book_id;" | connect_db
-            echo "Borrowing book with ID: $book_id"
-            # Add additional borrowing logic here
+            read "Would you like to know more about this author before borrowing the book? Y/N" author_response
+            if [ "$author_response" == "Y" ]; then
+                author_id=$(psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -t -c "SELECT author_id FROM books WHERE book_id = '$book_id';" | tr -d '[:space:]')
+                psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -c "SELECT * FROM author WHERE author_id = '$author_id';"
+                read -p "Do you want to borrow this book? (Y/N): " borrow_response
+
+                if [ "$borrow_response" == "Y" ]; then
+                    echo "Borrowing book with ID: $book_id"
+                else
+                    echo "Book not borrowed. Exiting..."
+                fi
+            else
+                echo "Borrowing book with ID: $book_id"            
         else
             echo "Book not found or not available for borrowing."
         fi
+
     else
         # For staff and admin, display all available books
         echo "Available books:"
@@ -112,7 +124,7 @@ return_book() {
         echo "Book not found or not borrowed."
     else
         echo "Returning book: $borrowed"
-        echo "UPDATE books SET availability = true WHERE book_id = '$return_term';" | connect_db
+        echo "UPDATE books SET availability = true WHERE book_id = '$return_term' OR title='$return_term' OR author='$return_term';" | connect_db
     fi
 }
 
@@ -149,8 +161,8 @@ elif [ "$username" == "staff" ] && [ "$password" == "staff1" ]; then
     read -p "Select an option: " staff_option
 
     case $staff_option in
-        1) show_all_books ;;
-        *) echo "Invalid option. Exiting..."; exit 1 ;;
+        1) show_all_books ;
+         echo "Invalid option. Exiting..."; exit 1 ;;
     esac
 
 elif [ "$username" == "student" ] && [ "$password" == "student1" ]; then
