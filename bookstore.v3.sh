@@ -16,20 +16,17 @@ connect_db() {
 
 # Function to add a book to the database
 add_book() {
-    # Prompt the user for book details
     echo "Enter details for the new book:"
     read -p "Title: " title
-    read -p "Author: " author
-    read -p "Book ID: " book_id
-    read -p "Grade Level: " grade_level
+    read -p "Publication Year: " publication_year
+    read -p "Copies Available: " copies_available
+    read -p "Author ID: " author_id
 
-
-    # Construct the SQL command with user-input values
-    sql_command="INSERT INTO books (title, author, book_id, grade_level, availability) VALUES ('$title', '$author', '$book_id', '$grade_level', true);"
-
-    # Connect to the database and execute the SQL command
+    sql_command="INSERT INTO Book (Title, Publication_Year, Copies_Available, Author_ID) VALUES ('$title', '$publication_year', '$copies_available', '$author_id');"
     connect_db "$sql_command"
 }
+
+  
 # Function to remove a book from the database
 remove_book() {
     # Prompt the user for book id to remove
@@ -133,15 +130,17 @@ echo
 if [ "$username" == "admin" ] && [ "$password" == "admin1" ]; then
     USER_TYPE="admin"
     echo "Admin actions:"
-    echo "1. Add a book"
-    echo "2. Remove a book"
+    echo "1. Add an author"
+    echo "2. Add a member"
+    echo "3. Add a book"
     read -p "Select an option: " admin_option
 
     case $admin_option in
-        1) add_book ;;
-        2) remove_book ;;
-        *) echo "Invalid option. Exiting..."; exit 1 ;;
-    esac
+            1) add_author ;;
+            2) add_member ;;
+            3) add_book ;;
+            *) echo "Invalid option. Exiting..."; exit 1 ;;
+        esac
 elif [ "$username" == "staff" ] && [ "$password" == "staff1" ]; then
     USER_TYPE="staff"
     echo "Staff actions:"
