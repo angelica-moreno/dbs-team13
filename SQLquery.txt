@@ -20,14 +20,15 @@ Major VARCHAR(100)
 
 Instances:
 INSERT INTO Members(Member_ID, Phone_Number, Name, Degree_Type, Major)
-VALUES(6243987, 3058790934, ‘Roary’, ‘Masters’, ‘Literature’);
+VALUES(6243987, 3058790934, 'Roary', 'Masters', 'Literature');
 
 
 INSERT INTO Members(Member_ID, Phone_Number, Name, Degree_Type, Major)
-VALUES(6263287, 7868791235, ‘Chris’, 'Bachelors', 'Business');
+VALUES(6263287, 7868791235, 'Chris', 'Bachelors', 'Business');
 
 
-\ 
+Book:
+
 CREATE TABLE Book(
 Book_ID INT PRIMARY KEY,
 Author VARCHAR(100),
@@ -44,5 +45,5 @@ VALUES (1338878921, 'J.K. Rowling', '1998-09-01', 12, 614857);
 
 
 
-INSERT INTO Book(Book_ID, Author, Publication_Year, Copies_Avaialble, Author_ID, Genre_ID)
-VALUES(1524763136, ‘Michelle Obama’, ‘2018-11-13’, 5, 723784);
+INSERT INTO Book(Book_ID, Author, Publication_Year, Copies_Available, Author_ID)
+VALUES(1524763136, 'Michelle Obama', '2018-11-13', 5, 723784);
