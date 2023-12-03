@@ -14,17 +14,16 @@ CREATE TABLE Members(
 Member_ID INT PRIMARY KEY,
 Phone_Number VARCHAR(50),
 Name VARCHAR(100),
-Degree_Type VARCHAR(100),
-Major VARCHAR(100)
+Role VARCHAR(100)
 );
 
 Instances:
-INSERT INTO Members(Member_ID, Phone_Number, Name, Degree_Type, Major)
-VALUES(6243987, 3058790934, 'Roary', 'Masters', 'Literature');
+INSERT INTO Members(Member_ID, Phone_Number, Name, Role)
+VALUES(6243987, 3058790934, 'Roary', Staff);
 
 
-INSERT INTO Members(Member_ID, Phone_Number, Name, Degree_Type, Major)
-VALUES(6263287, 7868791235, 'Chris', 'Bachelors', 'Business');
+INSERT INTO Members(Member_ID, Phone_Number, Name, Role)
+VALUES(6263287, 7868791235, 'Chris', Student);
 
 
 Book:
