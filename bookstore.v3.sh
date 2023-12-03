@@ -56,21 +56,20 @@ show_all_books() {
 
 
 # Function to search and display available books based on user's grade level
+# Function to search and display available books based on user's grade level
 search_and_borrow_book() {
     connect_db
     if [ "$USER_TYPE" == "student" ]; then
-        # Prompt the user for their grade level
-        read -p "Enter your grade level (13-16): " user_grade_level
+        # Display available authors and their biographies
+        echo "Available authors and their biographies:"
+        psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -c "SELECT name, biography FROM author;"
 
-        # Validate the user's grade level (you can customize this validation)
-        if ! [[ "$user_grade_level" =~ ^[1][3-6]$ ]]; then
-            echo "Invalid grade level. Exiting..."
-            exit 1
-        fi
+        # Prompt the user to enter the author's name to retrieve books
+        read -p "Enter the author's name to retrieve books: " author_name
 
-        # Display available books at the specified grade level
-        echo "Available books for grade level $user_grade_level:"
-        psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -c "SELECT * FROM books WHERE grade_level = '$user_grade_level' AND availability = true;"
+        # Display available books for the selected author
+        echo "Available books by $author_name:"
+        psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -c "SELECT * FROM books WHERE author_id = (SELECT author_id FROM author WHERE name = '$author_name') AND availability = true;"
 
         # Prompt the user to enter the book ID to borrow
         read -p "Enter the book ID to borrow: " book_id
@@ -78,30 +77,17 @@ search_and_borrow_book() {
         # Check if the selected book is available
         available=$(psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -t -c "SELECT availability FROM books WHERE book_id = '$book_id' AND availability = true;")
 
-        available=$(echo "$availble" | tr -d '[:space:]')
+        available=$(echo "$available" | tr -d '[:space:]')
         echo "Debug: Availability - $available"
 
         if [ "$available" == "t" ]; then
-    # Call the SQL function to borrow the book
-    echo "SELECT borrow_book($book_id, '$USER_TYPE', $user_grade_level);" | connect_db
-    echo "UPDATE books SET availability = false WHERE book_id = $book_id;" | connect_db
-    read -p "Would you like to know more about this author before borrowing the book? Y/N" author_response
-    if [ "$author_response" == "Y" ]; then
-        author_id=$(psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -t -c "SELECT author_id FROM books WHERE book_id = '$book_id';" | tr -d '[:space:]')
-        psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -c "SELECT * FROM author WHERE author_id = '$author_id';"
-        read -p "Do you want to borrow this book? (Y/N): " borrow_response
-
-        if [ "$borrow_response" == "Y" ]; then
+            # Call the SQL function to borrow the book
+            echo "SELECT borrow_book($book_id, '$USER_TYPE', null);" | connect_db
+            echo "UPDATE books SET availability = false WHERE book_id = $book_id;" | connect_db
             echo "Borrowing book with ID: $book_id"
         else
-            echo "Book not borrowed. Exiting..."
+            echo "Book not found or not available for borrowing."
         fi
-    else
-        echo "Borrowing book with ID: $book_id"            
-    fi
-else
-    echo "Book not found or not available for borrowing."
-fi
 
     else
         # For staff and admin, display all available books
@@ -109,6 +95,7 @@ fi
         psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -c "SELECT * FROM books WHERE availability = true;"
     fi
 }
+
     
 # Function to return a book
 return_book() {
