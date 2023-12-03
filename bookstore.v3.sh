@@ -22,7 +22,7 @@ add_book() {
     read -p "Copies Available: " copies_available
     read -p "Author ID: " author_id
 
-    sql_command="INSERT INTO Book (Title, Publication_Year, Copies_Available, Author_ID) VALUES ('$title', '$publication_year', '$copies_available', '$author_id');"
+    sql_command="INSERT INTO books (Title, Publication_Year, Copies_Available, Author_ID) VALUES ('$title', '$publication_year', '$copies_available', '$author_id');"
     connect_db "$sql_command"
 }
 
@@ -82,25 +82,26 @@ search_and_borrow_book() {
         echo "Debug: Availability - $available"
 
         if [ "$available" == "t" ]; then
-            # Call the SQL function to borrow the book
-            echo "SELECT borrow_book($book_id, '$USER_TYPE', $user_grade_level);" | connect_db
-            echo "UPDATE books SET availability = false WHERE book_id = $book_id;" | connect_db
-            read "Would you like to know more about this author before borrowing the book? Y/N" author_response
-            if [ "$author_response" == "Y" ]; then
-                author_id=$(psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -t -c "SELECT author_id FROM books WHERE book_id = '$book_id';" | tr -d '[:space:]')
-                psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -c "SELECT * FROM author WHERE author_id = '$author_id';"
-                read -p "Do you want to borrow this book? (Y/N): " borrow_response
+    # Call the SQL function to borrow the book
+    echo "SELECT borrow_book($book_id, '$USER_TYPE', $user_grade_level);" | connect_db
+    echo "UPDATE books SET availability = false WHERE book_id = $book_id;" | connect_db
+    read -p "Would you like to know more about this author before borrowing the book? Y/N" author_response
+    if [ "$author_response" == "Y" ]; then
+        author_id=$(psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -t -c "SELECT author_id FROM books WHERE book_id = '$book_id';" | tr -d '[:space:]')
+        psql -h $DB_HOST -p $DB_PORT -d $DB_NAME -U $DB_USER -c "SELECT * FROM author WHERE author_id = '$author_id';"
+        read -p "Do you want to borrow this book? (Y/N): " borrow_response
 
-                if [ "$borrow_response" == "Y" ]; then
-                    echo "Borrowing book with ID: $book_id"
-                else
-                    echo "Book not borrowed. Exiting..."
-                fi
-            else
-                echo "Borrowing book with ID: $book_id"            
+        if [ "$borrow_response" == "Y" ]; then
+            echo "Borrowing book with ID: $book_id"
         else
-            echo "Book not found or not available for borrowing."
+            echo "Book not borrowed. Exiting..."
         fi
+    else
+        echo "Borrowing book with ID: $book_id"            
+    fi
+else
+    echo "Book not found or not available for borrowing."
+fi
 
     else
         # For staff and admin, display all available books
