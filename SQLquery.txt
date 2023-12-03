@@ -45,5 +45,5 @@ VALUES (1338878921, 'Harry Potter' 'J.K. Rowling', '1998-09-01', 12, 614857);
 
 
 
-INSERT INTO Book(Book_ID, Author, Publication_Year, Copies_Available, Author_ID)
+INSERT INTO Book(Book_ID, Title, Author, Publication_Year, Copies_Available, Author_ID)
 VALUES(1524763136, 'The Light We Carry', 'Michelle Obama', '2018-11-13', 5, 723784);
