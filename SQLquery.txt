@@ -32,7 +32,7 @@ CREATE TABLE Book(
 Book_ID INT PRIMARY KEY,
 Title VARCHAR(100),
 Author VARCHAR(100),
-Publication_Year DATE,
+Publication_Year INT,
 Copies_Available INT,
 Author_ID INT,
 FOREIGN KEY (Author_ID) REFERENCES Author(Author_ID),
@@ -41,9 +41,9 @@ FOREIGN KEY (Author_ID) REFERENCES Author(Author_ID),
 
 Instances:
 INSERT INTO Book (Book_ID,Title Author, Publication_Year, Copies_Available, Author_ID)
-VALUES (1338878921, 'Harry Potter' 'J.K. Rowling', '1998-09-01', 12, 614857);
+VALUES (1338878921, 'Harry Potter' 'J.K. Rowling', 1998, 12, 614857);
 
 
 
 INSERT INTO Book(Book_ID, Title, Author, Publication_Year, Copies_Available, Author_ID)
-VALUES(1524763136, 'The Light We Carry', 'Michelle Obama', '2018-11-13', 5, 723784);
+VALUES(1524763136, 'The Light We Carry', 'Michelle Obama', 2018, 5, 723784);
